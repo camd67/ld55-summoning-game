@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://bgi8jf8doyn37"]
+
+[ext_resource type="Script" path="res://battlefield/Player.gd" id="1_d7imw"]
+[ext_resource type="Texture2D" uid="uid://cekenxf8m641a" path="res://summon/w.png" id="2_fm7x3"]
+[ext_resource type="Script" path="res://battlefield/Enemy.gd" id="3_jdd3w"]
+[ext_resource type="Texture2D" uid="uid://y3ypui04hg1x" path="res://summon/i.png" id="3_stidb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8yb6s"]
+size = Vector2(50, 600)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3t5wi"]
+size = Vector2(50, 600)
+
+[node name="Battlefield" type="Node2D"]
+
+[node name="Player" type="Node2D" parent="."]
+script = ExtResource("1_d7imw")
+
+[node name="HurtArea" type="Area2D" parent="Player"]
+position = Vector2(25, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/HurtArea"]
+shape = SubResource("RectangleShape2D_8yb6s")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="PlayerSprite" type="Sprite2D" parent="Player"]
+position = Vector2(25, 300)
+texture = ExtResource("2_fm7x3")
+
+[node name="PlayerSummons" type="Node2D" parent="Player"]
+
+[node name="Enemy" type="Node2D" parent="."]
+script = ExtResource("3_jdd3w")
+
+[node name="HurtArea" type="Area2D" parent="Enemy"]
+position = Vector2(775, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/HurtArea"]
+shape = SubResource("RectangleShape2D_3t5wi")
+debug_color = Color(0.701961, 0.0666667, 0, 0.419608)
+
+[node name="EnemySprite" type="Sprite2D" parent="Enemy"]
+position = Vector2(775, 300)
+texture = ExtResource("3_stidb")
+
+[node name="EnemySummons" type="Node2D" parent="Enemy"]

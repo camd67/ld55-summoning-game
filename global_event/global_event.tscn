@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cdp5y80uompa5"]
+
+[ext_resource type="Script" path="res://global_event/GlobalEvent.gd" id="1_hnm5o"]
+
+[node name="GlobalEvent" type="Node"]
+script = ExtResource("1_hnm5o")
