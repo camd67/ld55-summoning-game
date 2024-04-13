@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://bgi8jf8doyn37"]
+[gd_scene load_steps=8 format=3 uid="uid://bgi8jf8doyn37"]
 
+[ext_resource type="Script" path="res://battlefield/battlefield.gd" id="1_7rg0x"]
 [ext_resource type="Script" path="res://battlefield/Player.gd" id="1_d7imw"]
 [ext_resource type="Texture2D" uid="uid://cekenxf8m641a" path="res://summon/w.png" id="2_fm7x3"]
 [ext_resource type="Script" path="res://battlefield/Enemy.gd" id="3_jdd3w"]
@@ -12,12 +13,14 @@ size = Vector2(50, 600)
 size = Vector2(50, 600)
 
 [node name="Battlefield" type="Node2D"]
+script = ExtResource("1_7rg0x")
 
 [node name="Player" type="Node2D" parent="."]
 script = ExtResource("1_d7imw")
 
-[node name="HurtArea" type="Area2D" parent="Player"]
+[node name="HurtArea" type="Area2D" parent="Player" groups=["hurt_area"]]
 position = Vector2(25, 300)
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/HurtArea"]
 shape = SubResource("RectangleShape2D_8yb6s")
@@ -32,8 +35,9 @@ texture = ExtResource("2_fm7x3")
 [node name="Enemy" type="Node2D" parent="."]
 script = ExtResource("3_jdd3w")
 
-[node name="HurtArea" type="Area2D" parent="Enemy"]
+[node name="HurtArea" type="Area2D" parent="Enemy" groups=["hurt_area"]]
 position = Vector2(775, 300)
+collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/HurtArea"]
 shape = SubResource("RectangleShape2D_3t5wi")
@@ -44,3 +48,22 @@ position = Vector2(775, 300)
 texture = ExtResource("3_stidb")
 
 [node name="EnemySummons" type="Node2D" parent="Enemy"]
+
+[node name="BattlefieldUi" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PlayerHpLabel" type="Label" parent="BattlefieldUi"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "W HP: %s"
+
+[node name="EnemyHpLabel" type="Label" parent="BattlefieldUi"]
+layout_mode = 1
+offset_left = 738.0
+offset_right = 800.0
+offset_bottom = 23.0
+text = "I HP: %s"
