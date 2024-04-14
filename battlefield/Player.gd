@@ -3,6 +3,7 @@ extends Node2D
 @onready var summonable_manager: SummonableManager = $"../SummonableManager"
 @onready var hurt_area: Area2D = $HurtArea
 @onready var player_summons: Node2D = $PlayerSummons
+@onready var failed_summon_player: AudioStreamPlayer = $FailedSummonPlayer
 
 const a_summon = preload("res://summon/summon_a.tscn")
 const s_summon = preload("res://summon/summon_s.tscn")
@@ -31,13 +32,16 @@ func _input(event: InputEvent) -> void:
 	# We're not in our summoning rect, ignore
 	var mouse_pos := get_viewport().get_mouse_position()
 	if not summon_area.has_point(mouse_pos):
+		if not failed_summon_player.playing:
+			failed_summon_player.play()
 		return
 
 	# Only summon if we're a valid key
 	if event.is_action_pressed("summon_a"):
 		var maybe_summon_a := summonable_manager.consume_summonable("a")
 		if maybe_summon_a == null:
-			# Play some effect?
+			if not failed_summon_player.playing:
+				failed_summon_player.play()
 			return
 		# remove from the tree so that we don't reformat incorrectly
 		maybe_summon_a.reparent(self)
@@ -52,6 +56,8 @@ func _input(event: InputEvent) -> void:
 		var maybe_summon_s := summonable_manager.consume_summonable("s")
 		if maybe_summon_s == null:
 			# Play some effect?
+			if not failed_summon_player.playing:
+				failed_summon_player.play()
 			return
 		# remove from the tree so that we don't reformat incorrectly
 		maybe_summon_s.reparent(self)
@@ -66,6 +72,8 @@ func _input(event: InputEvent) -> void:
 		var maybe_summon_d := summonable_manager.consume_summonable("d")
 		if maybe_summon_d == null:
 			# Play some effect?
+			if not failed_summon_player.playing:
+				failed_summon_player.play()
 			return
 		# remove from the tree so that we don't reformat incorrectly
 		maybe_summon_d.reparent(self)

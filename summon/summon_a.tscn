@@ -1,9 +1,14 @@
-[gd_scene load_steps=18 format=3 uid="uid://b22mawoy1yk45"]
+[gd_scene load_steps=24 format=3 uid="uid://b22mawoy1yk45"]
 
 [ext_resource type="Texture2D" uid="uid://d1b4s5fcrp5sy" path="res://summon/a.png" id="1_77d6r"]
 [ext_resource type="Script" path="res://summon/summon_a.gd" id="1_hpr0u"]
 [ext_resource type="Texture2D" uid="uid://dsf6342shtn33" path="res://summon/comma.png" id="2_oy1nv"]
+[ext_resource type="AudioStream" uid="uid://cnj5vmpoxox8b" path="res://audio/shot.wav" id="3_738b5"]
 [ext_resource type="PackedScene" uid="uid://4huv5l4ksnct" path="res://components/health/health_component.tscn" id="4_3wwsa"]
+[ext_resource type="AudioStream" uid="uid://bkah3ky0r7a1p" path="res://audio/death_1.wav" id="6_1do7x"]
+[ext_resource type="AudioStream" uid="uid://4bsnqfm8nrj7" path="res://audio/death_2.wav" id="7_8usd6"]
+[ext_resource type="AudioStream" uid="uid://bhsad2afq3hme" path="res://audio/death_3.wav" id="8_830go"]
+[ext_resource type="AudioStream" uid="uid://crus7w14cn2oo" path="res://audio/summon.wav" id="9_6bwqj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cx552"]
 size = Vector2(24, 24)
@@ -148,6 +153,21 @@ tracks/5/keys = {
 "method": &"start"
 }]
 }
+tracks/6/type = "audio"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AttackPlayer")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("3_738b5")
+}],
+"times": PackedFloat32Array(0.2)
+}
+tracks/6/use_blend = true
 
 [sub_resource type="Animation" id="Animation_1bfk5"]
 resource_name = "die"
@@ -201,6 +221,20 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(1, 1), Vector2(0.8, 1.2)]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("DeathPlayer")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_r7vil"]
@@ -281,6 +315,15 @@ colors = PackedColorArray(0.960938, 0.138885, 0.138885, 1, 1, 1, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_wx2b0"]
 gradient = SubResource("Gradient_6e30v")
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_uo5sb"]
+streams_count = 3
+stream_0/stream = ExtResource("6_1do7x")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("7_8usd6")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("8_830go")
+stream_2/weight = 1.0
+
 [node name="SummonA" type="CharacterBody2D" groups=["player_summon"]]
 collision_mask = 3
 script = ExtResource("1_hpr0u")
@@ -332,6 +375,17 @@ debug_color = Color(0, 0.701961, 0.454902, 0.419608)
 sprite = NodePath("../Sprite2D")
 health = 5.0
 health_gradient = SubResource("GradientTexture1D_wx2b0")
+
+[node name="AttackPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="DeathPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_uo5sb")
+volume_db = -5.0
+
+[node name="SummonPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_6bwqj")
+volume_db = -10.0
+autoplay = true
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://bgi8jf8doyn37"]
+[gd_scene load_steps=40 format=3 uid="uid://bgi8jf8doyn37"]
 
 [ext_resource type="Script" path="res://battlefield/battlefield.gd" id="1_7rg0x"]
 [ext_resource type="Script" path="res://battlefield/Player.gd" id="1_d7imw"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://ck8uk5dc2kou6" path="res://battlefield/player_barrier.png" id="6_xqe08"]
 [ext_resource type="Texture2D" uid="uid://c65kx6yqqyolq" path="res://battlefield/battlefield.png" id="7_ot78s"]
 [ext_resource type="PackedScene" uid="uid://4huv5l4ksnct" path="res://components/health/health_component.tscn" id="7_rf14t"]
+[ext_resource type="AudioStream" uid="uid://dvuevs51efgo0" path="res://audio/failed_summon.wav" id="8_u4vy1"]
 [ext_resource type="Texture2D" uid="uid://i8v1uewael3w" path="res://battlefield/enemy_barrier.png" id="10_wv58s"]
 [ext_resource type="Texture2D" uid="uid://butm3h6fx2eeb" path="res://battlefield/victory/sans_serif_victory_1.png" id="11_yj0oi"]
 [ext_resource type="Texture2D" uid="uid://bnuduke0lefus" path="res://battlefield/victory/sans_serif_victory_2.png" id="12_xe74g"]
@@ -574,6 +575,10 @@ libraries = {
 "": SubResource("AnimationLibrary_sdj1b")
 }
 
+[node name="FailedSummonPlayer" type="AudioStreamPlayer" parent="Player"]
+stream = ExtResource("8_u4vy1")
+volume_db = -10.0
+
 [node name="Enemy" type="Node2D" parent="."]
 script = ExtResource("3_jdd3w")
 
@@ -605,7 +610,7 @@ centered = false
 
 [node name="HealthComponent" parent="Enemy" node_paths=PackedStringArray("sprite") instance=ExtResource("7_rf14t")]
 sprite = NodePath("../Barrier")
-health = 1.0
+health = 10.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Enemy"]
 libraries = {

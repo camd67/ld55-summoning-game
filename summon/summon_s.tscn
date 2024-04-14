@@ -1,9 +1,14 @@
-[gd_scene load_steps=15 format=3 uid="uid://bevdpkgvf5oae"]
+[gd_scene load_steps=21 format=3 uid="uid://bevdpkgvf5oae"]
 
 [ext_resource type="Script" path="res://summon/summon_a.gd" id="1_0svjx"]
 [ext_resource type="Texture2D" uid="uid://ca0k3jscwl1gy" path="res://summon/s.png" id="2_73gdm"]
+[ext_resource type="AudioStream" uid="uid://dpy57hseopfac" path="res://audio/sword.wav" id="3_uf5ei"]
 [ext_resource type="PackedScene" uid="uid://4huv5l4ksnct" path="res://components/health/health_component.tscn" id="4_hk3yv"]
 [ext_resource type="Texture2D" uid="uid://yfp2v5bkovnd" path="res://summon/paren.png" id="4_ofmr2"]
+[ext_resource type="AudioStream" uid="uid://bkah3ky0r7a1p" path="res://audio/death_1.wav" id="6_jkyrg"]
+[ext_resource type="AudioStream" uid="uid://4bsnqfm8nrj7" path="res://audio/death_2.wav" id="7_01lfd"]
+[ext_resource type="AudioStream" uid="uid://bhsad2afq3hme" path="res://audio/death_3.wav" id="8_3s2ji"]
+[ext_resource type="AudioStream" uid="uid://crus7w14cn2oo" path="res://audio/summon.wav" id="9_f73kp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cx552"]
 size = Vector2(24, 24)
@@ -172,6 +177,21 @@ tracks/6/keys = {
 "update": 0,
 "values": [Vector2(8, -10), Vector2(3, -13), Vector2(12, 7), Vector2(8, -10)]
 }
+tracks/7/type = "audio"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("AudioStreamPlayer")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("3_uf5ei")
+}],
+"times": PackedFloat32Array(0.2)
+}
+tracks/7/use_blend = true
 
 [sub_resource type="Animation" id="Animation_1bfk5"]
 resource_name = "die"
@@ -249,6 +269,20 @@ tracks/5/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector2(8, -10), Vector2(-31, -33), Vector2(-37, 8)]
+}
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("DeathPlayer")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_r7vil"]
@@ -336,6 +370,15 @@ colors = PackedColorArray(0.960938, 0.138885, 0.138885, 1, 1, 1, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_wx2b0"]
 gradient = SubResource("Gradient_6e30v")
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_nj2e6"]
+streams_count = 3
+stream_0/stream = ExtResource("6_jkyrg")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("7_01lfd")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("8_3s2ji")
+stream_2/weight = 1.0
+
 [node name="SummonS" type="CharacterBody2D" groups=["player_summon"]]
 collision_mask = 3
 script = ExtResource("1_0svjx")
@@ -384,6 +427,17 @@ position = Vector2(8, -10)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("4_ofmr2")
 offset = Vector2(0, -8)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="DeathPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_nj2e6")
+volume_db = -5.0
+
+[node name="SummonPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_f73kp")
+volume_db = -10.0
+autoplay = true
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
