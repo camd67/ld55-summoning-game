@@ -10,7 +10,20 @@ const summon_d = preload("res://summon/summon_d.tscn")
 
 var summon_area := Rect2(0, 0, 400, 600)
 
+var game_over := false
+
+
+func _ready() -> void:
+	GlobalEvent.game_over.connect(func(player_won: bool) -> void:
+		game_over = true
+	)
+
+
 func _input(event: InputEvent) -> void:
+	# don't allow any more inputs if the game is over
+	if game_over:
+		return
+
 	# We're not a key event, ignore
 	if not event is InputEventKey:
 		return

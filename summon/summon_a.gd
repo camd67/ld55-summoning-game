@@ -13,6 +13,14 @@ var is_attacking := false
 var is_dying := false
 
 func _ready() -> void:
+	GlobalEvent.game_over.connect(func(player_won: bool) -> void:
+		# If we're part of the side that lost, immediately die
+		# This way we don't potentially end up in a stalemate where
+		# one player lost but units keep moving forward
+		if player_won == is_enemy:
+			_on_health_component_on_death()
+	)
+
 	if is_enemy:
 		remove_from_group("player_summon")
 		speed *= Vector2(-1, 1)

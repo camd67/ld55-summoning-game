@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bgi8jf8doyn37"]
+[gd_scene load_steps=39 format=3 uid="uid://bgi8jf8doyn37"]
 
 [ext_resource type="Script" path="res://battlefield/battlefield.gd" id="1_7rg0x"]
 [ext_resource type="Script" path="res://battlefield/Player.gd" id="1_d7imw"]
@@ -6,16 +6,508 @@
 [ext_resource type="Script" path="res://battlefield/SummonableManager.gd" id="2_rc5qs"]
 [ext_resource type="Script" path="res://battlefield/Enemy.gd" id="3_jdd3w"]
 [ext_resource type="Texture2D" uid="uid://y3ypui04hg1x" path="res://summon/i.png" id="3_stidb"]
+[ext_resource type="Texture2D" uid="uid://ck8uk5dc2kou6" path="res://battlefield/player_barrier.png" id="6_xqe08"]
 [ext_resource type="Texture2D" uid="uid://c65kx6yqqyolq" path="res://battlefield/battlefield.png" id="7_ot78s"]
+[ext_resource type="PackedScene" uid="uid://4huv5l4ksnct" path="res://components/health/health_component.tscn" id="7_rf14t"]
+[ext_resource type="Texture2D" uid="uid://i8v1uewael3w" path="res://battlefield/enemy_barrier.png" id="10_wv58s"]
+[ext_resource type="Texture2D" uid="uid://butm3h6fx2eeb" path="res://battlefield/victory/sans_serif_victory_1.png" id="11_yj0oi"]
+[ext_resource type="Texture2D" uid="uid://bnuduke0lefus" path="res://battlefield/victory/sans_serif_victory_2.png" id="12_xe74g"]
+[ext_resource type="Texture2D" uid="uid://chuo84l04w1ci" path="res://battlefield/victory/sans_serif_victory_3.png" id="13_iluwk"]
+[ext_resource type="Texture2D" uid="uid://cth5raw8q0tcr" path="res://battlefield/victory/sans_serif_victory_button.png" id="14_fmcpd"]
+[ext_resource type="Texture2D" uid="uid://b2edvh7scimdo" path="res://main_menu/arrow_1.png" id="15_n15er"]
+[ext_resource type="Texture2D" uid="uid://b2l662yptyyhw" path="res://battlefield/victory/serif_victory_1.png" id="15_rdsf2"]
+[ext_resource type="Texture2D" uid="uid://bb0gqxcy41m7s" path="res://battlefield/victory/serif_victory_2.png" id="16_n12af"]
+[ext_resource type="Texture2D" uid="uid://bo0cwltxtsrog" path="res://main_menu/arrow_2.png" id="16_psm3p"]
+[ext_resource type="Texture2D" uid="uid://bo4tod7o5icun" path="res://battlefield/victory/serif_victory_3.png" id="17_2unj4"]
+[ext_resource type="Texture2D" uid="uid://118nfaxoffh2" path="res://battlefield/victory/serif_victory_button.png" id="18_c4mo8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8yb6s"]
 size = Vector2(50, 600)
 
+[sub_resource type="Animation" id="Animation_br0as"]
+resource_name = "fade"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Barrier:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 0.5),
+"update": 0,
+"values": [Color(1, 0.12549, 0.0588235, 1), Color(1, 0.121569, 0.0588235, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_wukoo"]
+length = 0.001
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Barrier:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Summonables:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_cmx3h"]
+resource_name = "summoner_death"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, -2, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0.12549, 0.0588235, 1), Color(1, 0.121569, 0.0588235, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Summonables:modulate")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0.12549, 0.0588235, 1), Color(1, 0.121569, 0.0588235, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sdj1b"]
+_data = {
+"RESET": SubResource("Animation_wukoo"),
+"fade": SubResource("Animation_br0as"),
+"summoner_death": SubResource("Animation_cmx3h")
+}
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3t5wi"]
 size = Vector2(50, 600)
 
+[sub_resource type="Animation" id="Animation_nays7"]
+resource_name = "fade"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Barrier:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 2),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ahdc5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Barrier:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EnemySprite:modulate")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Summonables:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_kj5fp"]
+resource_name = "summoner_death"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemySprite:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, -2, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Summonables:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0.12549, 0.0588235, 1), Color(1, 0.121569, 0.0588235, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f6r5e"]
+_data = {
+"RESET": SubResource("Animation_ahdc5"),
+"fade": SubResource("Animation_nays7"),
+"summoner_death": SubResource("Animation_kj5fp")
+}
+
+[sub_resource type="Animation" id="Animation_2p6ou"]
+resource_name = "defaut"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SansSerifVictory1:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.8, 4.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SansSerifVictory2:modulate")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4.8, 6.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SansSerifVictory3:modulate")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 6.8, 8.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SansSerifVictoryButton:modulate")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 2.4, 3.4),
+"transitions": PackedFloat32Array(1, 1, 2),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ColorRect:modulate")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 2.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_gpf28"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SansSerifVictory1:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SansSerifVictory2:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SansSerifVictory3:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SansSerifVictoryButton:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ColorRect:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4vave"]
+_data = {
+"RESET": SubResource("Animation_gpf28"),
+"default": SubResource("Animation_2p6ou")
+}
+
+[sub_resource type="Animation" id="Animation_rrgrc"]
+resource_name = "default"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SansSerifVictory1:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.8, 4.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SansSerifVictory2:modulate")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4.8, 6.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SansSerifVictory3:modulate")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 6.8, 8.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SansSerifVictoryButton:modulate")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 2.4, 3.4),
+"transitions": PackedFloat32Array(1, 1, 2),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ColorRect:modulate")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 2.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ytpe3"]
+resource_name = "RESET"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SansSerifVictory1:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SansSerifVictory2:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SansSerifVictory3:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SansSerifVictoryButton:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ColorRect:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x8uen"]
+_data = {
+"RESET": SubResource("Animation_ytpe3"),
+"default": SubResource("Animation_rrgrc")
+}
+
+[sub_resource type="Animation" id="Animation_1cg25"]
+resource_name = "arrow_bounce"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FocusArrows/Arrow1:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(-2, 0.5, -2),
+"update": 0,
+"values": [Vector2(-225, 0), Vector2(-180, 0), Vector2(-225, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FocusArrows/Arrow2:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(-2, 0.5, -2),
+"update": 0,
+"values": [Vector2(225, 0), Vector2(180, 0), Vector2(225, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_whq6x"]
+_data = {
+"arrow_bounce": SubResource("Animation_1cg25")
+}
+
 [node name="Battlefield" type="Node2D"]
 script = ExtResource("1_7rg0x")
+metadata/_edit_vertical_guides_ = [400.0]
 
 [node name="BattlefieldBG" type="Sprite2D" parent="."]
 texture = ExtResource("7_ot78s")
@@ -68,6 +560,20 @@ texture = ExtResource("2_fm7x3")
 [node name="Summonables" type="Node2D" parent="Player"]
 position = Vector2(15, 50)
 
+[node name="Barrier" type="Sprite2D" parent="Player"]
+position = Vector2(3, 0)
+texture = ExtResource("6_xqe08")
+centered = false
+
+[node name="HealthComponent" parent="Player" node_paths=PackedStringArray("sprite") instance=ExtResource("7_rf14t")]
+sprite = NodePath("../Barrier")
+health = 10.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
+libraries = {
+"": SubResource("AnimationLibrary_sdj1b")
+}
+
 [node name="Enemy" type="Node2D" parent="."]
 script = ExtResource("3_jdd3w")
 
@@ -92,24 +598,101 @@ position = Vector2(750, 50)
 wait_time = 0.5
 autostart = true
 
-[node name="BattlefieldUi" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Barrier" type="Sprite2D" parent="Enemy"]
+position = Vector2(722, 0)
+texture = ExtResource("10_wv58s")
+centered = false
 
-[node name="PlayerHpLabel" type="Label" parent="BattlefieldUi"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-text = "W HP: %s"
+[node name="HealthComponent" parent="Enemy" node_paths=PackedStringArray("sprite") instance=ExtResource("7_rf14t")]
+sprite = NodePath("../Barrier")
+health = 1.0
 
-[node name="EnemyHpLabel" type="Label" parent="BattlefieldUi"]
-layout_mode = 0
-offset_left = 738.0
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Enemy"]
+libraries = {
+"": SubResource("AnimationLibrary_f6r5e")
+}
+
+[node name="PlayerWinOverlay" type="Node2D" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="PlayerWinOverlay"]
 offset_right = 800.0
-offset_bottom = 23.0
-text = "I HP: %s"
+offset_bottom = 600.0
+color = Color(0, 0, 0, 1)
+
+[node name="SansSerifVictory1" type="Sprite2D" parent="PlayerWinOverlay"]
+position = Vector2(400, 114)
+texture = ExtResource("11_yj0oi")
+
+[node name="SansSerifVictory2" type="Sprite2D" parent="PlayerWinOverlay"]
+position = Vector2(400, 298)
+texture = ExtResource("12_xe74g")
+
+[node name="SansSerifVictory3" type="Sprite2D" parent="PlayerWinOverlay"]
+position = Vector2(400, 380)
+texture = ExtResource("13_iluwk")
+
+[node name="SansSerifVictoryButton" type="TextureButton" parent="PlayerWinOverlay"]
+offset_left = 259.0
+offset_top = 504.0
+offset_right = 542.0
+offset_bottom = 561.0
+texture_normal = ExtResource("14_fmcpd")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerWinOverlay"]
+libraries = {
+"": SubResource("AnimationLibrary_4vave")
+}
+
+[node name="EnemyWinOverlay" type="Node2D" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="EnemyWinOverlay"]
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0, 0, 0, 1)
+
+[node name="SansSerifVictory1" type="Sprite2D" parent="EnemyWinOverlay"]
+position = Vector2(400, 114)
+texture = ExtResource("15_rdsf2")
+
+[node name="SansSerifVictory2" type="Sprite2D" parent="EnemyWinOverlay"]
+position = Vector2(400, 298)
+texture = ExtResource("16_n12af")
+
+[node name="SansSerifVictory3" type="Sprite2D" parent="EnemyWinOverlay"]
+position = Vector2(400, 381)
+texture = ExtResource("17_2unj4")
+
+[node name="SansSerifVictoryButton" type="TextureButton" parent="EnemyWinOverlay"]
+offset_left = 248.0
+offset_top = 505.0
+offset_right = 554.0
+offset_bottom = 562.0
+texture_normal = ExtResource("18_c4mo8")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EnemyWinOverlay"]
+libraries = {
+"": SubResource("AnimationLibrary_x8uen")
+}
+
+[node name="FocusArrows" type="Node2D" parent="."]
+visible = false
+position = Vector2(399, 531)
+
+[node name="Arrow1" type="Sprite2D" parent="FocusArrows"]
+position = Vector2(-207.848, 0)
+texture = ExtResource("15_n15er")
+offset = Vector2(0, -2)
+
+[node name="Arrow2" type="Sprite2D" parent="FocusArrows"]
+position = Vector2(207.848, 0)
+texture = ExtResource("16_psm3p")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_whq6x")
+}
 
 [connection signal="timeout" from="SummonableManager/PlayerSummonATimer" to="SummonableManager" method="_on_player_summon_a_timer_timeout"]
 [connection signal="timeout" from="SummonableManager/PlayerSummonSTimer" to="SummonableManager" method="_on_player_summon_s_timer_timeout"]
@@ -117,4 +700,12 @@ text = "I HP: %s"
 [connection signal="timeout" from="SummonableManager/EnemySummonATimer" to="SummonableManager" method="_on_enemy_summon_a_timer_timeout"]
 [connection signal="timeout" from="SummonableManager/EnemySummonSTimer" to="SummonableManager" method="_on_enemy_summon_s_timer_timeout"]
 [connection signal="timeout" from="SummonableManager/EnemySummonDTimer" to="SummonableManager" method="_on_enemy_summon_d_timer_timeout"]
+[connection signal="on_death" from="Player/HealthComponent" to="." method="_on_player_health_component_on_death"]
 [connection signal="timeout" from="Enemy/EnemyAiTimer" to="Enemy" method="_on_enemy_ai_timer_timeout"]
+[connection signal="on_death" from="Enemy/HealthComponent" to="." method="_on_enemy_health_component_on_death"]
+[connection signal="mouse_entered" from="PlayerWinOverlay/SansSerifVictoryButton" to="." method="_on_sans_serif_victory_button_mouse_entered"]
+[connection signal="mouse_exited" from="PlayerWinOverlay/SansSerifVictoryButton" to="." method="_on_sans_serif_victory_button_mouse_exited"]
+[connection signal="pressed" from="PlayerWinOverlay/SansSerifVictoryButton" to="." method="_on_sans_serif_victory_button_pressed"]
+[connection signal="mouse_entered" from="EnemyWinOverlay/SansSerifVictoryButton" to="." method="_on_sans_serif_victory_button_mouse_entered"]
+[connection signal="mouse_exited" from="EnemyWinOverlay/SansSerifVictoryButton" to="." method="_on_sans_serif_victory_button_mouse_exited"]
+[connection signal="pressed" from="EnemyWinOverlay/SansSerifVictoryButton" to="." method="_on_sans_serif_victory_button_pressed"]
