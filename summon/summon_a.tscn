@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b22mawoy1yk45"]
+[gd_scene load_steps=18 format=3 uid="uid://b22mawoy1yk45"]
 
 [ext_resource type="Texture2D" uid="uid://d1b4s5fcrp5sy" path="res://summon/a.png" id="1_77d6r"]
 [ext_resource type="Script" path="res://summon/summon_a.gd" id="1_hpr0u"]
@@ -251,20 +251,28 @@ _data = {
 "walk": SubResource("Animation_r7vil")
 }
 
+[sub_resource type="Curve" id="Curve_hxga0"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.783505, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_uwdyk"]
+curve = SubResource("Curve_hxga0")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_j315k"]
 particle_flag_disable_z = true
 angle_min = -30.0
 angle_max = 30.0
-spread = 40.0
-initial_velocity_min = 75.0
-initial_velocity_max = 75.0
+spread = 15.0
+initial_velocity_min = 200.0
+initial_velocity_max = 200.0
 gravity = Vector3(0, 0, 0)
+alpha_curve = SubResource("CurveTexture_uwdyk")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fxjo7"]
-size = Vector2(37, 49)
+size = Vector2(88.5, 49)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_58vwp"]
-size = Vector2(35, 42)
+size = Vector2(81.5, 42)
 
 [sub_resource type="Gradient" id="Gradient_6e30v"]
 interpolation_color_space = 2
@@ -277,7 +285,7 @@ gradient = SubResource("Gradient_6e30v")
 collision_mask = 3
 script = ExtResource("1_hpr0u")
 damage_range = Vector2(1.5, 2.5)
-speed = Vector2(20, 0)
+speed = Vector2(30, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_cx552")
@@ -305,7 +313,7 @@ randomness = 0.2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(26, 0)
+position = Vector2(51.75, 0)
 shape = SubResource("RectangleShape2D_fxjo7")
 disabled = true
 
@@ -316,7 +324,7 @@ one_shot = true
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetector"]
-position = Vector2(25, 0)
+position = Vector2(48.25, 0)
 shape = SubResource("RectangleShape2D_58vwp")
 debug_color = Color(0, 0.701961, 0.454902, 0.419608)
 

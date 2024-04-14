@@ -316,7 +316,7 @@ gradient = SubResource("Gradient_6e30v")
 collision_mask = 3
 script = ExtResource("1_hl1um")
 damage_range = Vector2(5, 10)
-speed = Vector2(45, 0)
+speed = Vector2(25, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_cx552")

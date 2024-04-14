@@ -29,6 +29,7 @@ gdscript/warnings/untyped_declaration=1
 window/size/viewport_width=800
 window/size/viewport_height=600
 window/stretch/mode="viewport"
+mouse_cursor/custom_image="res://cursor_pointer.png"
 
 [editor]
 
@@ -61,3 +62,4 @@ summon_d={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)

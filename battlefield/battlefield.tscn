@@ -1,10 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://bgi8jf8doyn37"]
+[gd_scene load_steps=10 format=3 uid="uid://bgi8jf8doyn37"]
 
 [ext_resource type="Script" path="res://battlefield/battlefield.gd" id="1_7rg0x"]
 [ext_resource type="Script" path="res://battlefield/Player.gd" id="1_d7imw"]
 [ext_resource type="Texture2D" uid="uid://cekenxf8m641a" path="res://summon/w.png" id="2_fm7x3"]
+[ext_resource type="Script" path="res://battlefield/SummonableManager.gd" id="2_rc5qs"]
 [ext_resource type="Script" path="res://battlefield/Enemy.gd" id="3_jdd3w"]
 [ext_resource type="Texture2D" uid="uid://y3ypui04hg1x" path="res://summon/i.png" id="3_stidb"]
+[ext_resource type="Texture2D" uid="uid://c65kx6yqqyolq" path="res://battlefield/battlefield.png" id="7_ot78s"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8yb6s"]
 size = Vector2(50, 600)
@@ -14,6 +16,37 @@ size = Vector2(50, 600)
 
 [node name="Battlefield" type="Node2D"]
 script = ExtResource("1_7rg0x")
+
+[node name="BattlefieldBG" type="Sprite2D" parent="."]
+texture = ExtResource("7_ot78s")
+centered = false
+
+[node name="SummonableManager" type="Node" parent="."]
+script = ExtResource("2_rc5qs")
+
+[node name="PlayerSummonATimer" type="Timer" parent="SummonableManager"]
+wait_time = 3.0
+autostart = true
+
+[node name="PlayerSummonSTimer" type="Timer" parent="SummonableManager"]
+wait_time = 2.0
+autostart = true
+
+[node name="PlayerSummonDTimer" type="Timer" parent="SummonableManager"]
+wait_time = 10.0
+autostart = true
+
+[node name="EnemySummonATimer" type="Timer" parent="SummonableManager"]
+wait_time = 3.0
+autostart = true
+
+[node name="EnemySummonSTimer" type="Timer" parent="SummonableManager"]
+wait_time = 2.0
+autostart = true
+
+[node name="EnemySummonDTimer" type="Timer" parent="SummonableManager"]
+wait_time = 10.0
+autostart = true
 
 [node name="Player" type="Node2D" parent="."]
 script = ExtResource("1_d7imw")
@@ -32,6 +65,9 @@ texture = ExtResource("2_fm7x3")
 
 [node name="PlayerSummons" type="Node2D" parent="Player"]
 
+[node name="Summonables" type="Node2D" parent="Player"]
+position = Vector2(15, 50)
+
 [node name="Enemy" type="Node2D" parent="."]
 script = ExtResource("3_jdd3w")
 
@@ -49,6 +85,13 @@ texture = ExtResource("3_stidb")
 
 [node name="EnemySummons" type="Node2D" parent="Enemy"]
 
+[node name="Summonables" type="Node2D" parent="Enemy"]
+position = Vector2(750, 50)
+
+[node name="EnemyAiTimer" type="Timer" parent="Enemy"]
+wait_time = 0.5
+autostart = true
+
 [node name="BattlefieldUi" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -62,8 +105,16 @@ offset_bottom = 23.0
 text = "W HP: %s"
 
 [node name="EnemyHpLabel" type="Label" parent="BattlefieldUi"]
-layout_mode = 1
+layout_mode = 0
 offset_left = 738.0
 offset_right = 800.0
 offset_bottom = 23.0
 text = "I HP: %s"
+
+[connection signal="timeout" from="SummonableManager/PlayerSummonATimer" to="SummonableManager" method="_on_player_summon_a_timer_timeout"]
+[connection signal="timeout" from="SummonableManager/PlayerSummonSTimer" to="SummonableManager" method="_on_player_summon_s_timer_timeout"]
+[connection signal="timeout" from="SummonableManager/PlayerSummonDTimer" to="SummonableManager" method="_on_player_summon_d_timer_timeout"]
+[connection signal="timeout" from="SummonableManager/EnemySummonATimer" to="SummonableManager" method="_on_enemy_summon_a_timer_timeout"]
+[connection signal="timeout" from="SummonableManager/EnemySummonSTimer" to="SummonableManager" method="_on_enemy_summon_s_timer_timeout"]
+[connection signal="timeout" from="SummonableManager/EnemySummonDTimer" to="SummonableManager" method="_on_enemy_summon_d_timer_timeout"]
+[connection signal="timeout" from="Enemy/EnemyAiTimer" to="Enemy" method="_on_enemy_ai_timer_timeout"]
